@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gallery Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f5f2;
+      --surface: #ffffff;
+      --border: #e8e4df;
+      --text: #1a1714;
+      --muted: #8c877f;
+      --accent: #c9622a;
+      --accent-light: #fdf0e8;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span { color: var(--accent); font-style: italic; }
+
+    .header-meta {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── Summary bar ── */
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      padding: 1.5rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      opacity: 0;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .stat-card:nth-child(1) { animation-delay: 0.05s; }
+    .stat-card:nth-child(2) { animation-delay: 0.1s; }
+    .stat-card:nth-child(3) { animation-delay: 0.15s; }
+    .stat-card:nth-child(4) { animation-delay: 0.2s; }
+
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .stat-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .stat-sub {
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.35rem 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-weight: 400;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--text);
+      color: #fff;
+      border-color: var(--text);
+    }
+
+    .sort-select {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 0.375rem;
+      padding: 0.35rem 0.75rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      color: var(--text);
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* ── Gallery grid ── */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+      padding: 0 2.5rem 3rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.45s ease forwards;
+      transition: box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+      transform: translateY(-2px);
+    }
+
+    .card-img-wrap {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: var(--border);
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+      display: block;
+    }
+
+    .card:hover .card-img-wrap img {
+      transform: scale(1.04);
+    }
+
+    .card-badge {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(4px);
+      border-radius: 2rem;
+      padding: 0.2rem 0.65rem;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+
+    .card-body {
+      padding: 1rem 1.125rem 1.125rem;
+    }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+      letter-spacing: -0.01em;
+    }
+
+    .card-author {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .card-stats {
+      display: flex;
+      gap: 1rem;
+      border-top: 1px solid var(--border);
+      padding-top: 0.8rem;
+    }
+
+    .card-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .card-stat-val {
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .card-stat-lbl {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+    }
+
+    .card-bar {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 0.75rem;
+      overflow: hidden;
+    }
+
+    .card-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 1s ease;
+    }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(26,23,20,0.85);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lb-inner {
+      background: var(--surface);
+      border-radius: 0.75rem;
+      overflow: hidden;
+      max-width: 780px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      animation: fadeUp 0.3s ease;
+    }
+
+    .lb-img { width: 100%; height: 420px; object-fit: cover; display: block; }
+
+    .lb-info {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      border-left: 1px solid var(--border);
+    }
+
+    .lb-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .lb-author { font-size: 0.78rem; color: var(--muted); }
+
+    .lb-stats { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .lb-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+    }
+
+    .lb-row-lbl { color: var(--muted); text-transform: uppercase; font-size: 0.68rem; letter-spacing: 0.06em; }
+    .lb-row-val { font-weight: 500; }
+
+    .lb-tag {
+      display: inline-block;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .lb-close {
+      margin-top: auto;
+      background: var(--text);
+      color: #fff;
+      border: none;
+      border-radius: 0.375rem;
+      padding: 0.6rem 1.2rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: background 0.15s;
+    }
+
+    .lb-close:hover { background: var(--accent); }
+
+    /* ── Empty state ── */
+    .empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      grid-column: 1/-1;
+      color: var(--muted);
+    }
+
+    .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 640px) {
+      .summary { grid-template-columns: repeat(2, 1fr); }
+      .lb-inner { grid-template-columns: 1fr; }
+      .lb-img { height: 220px; }
+      .controls { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+      .gallery { padding: 0 1rem 3rem; }
+      header, .controls, .summary .stat-card { padding-left: 1rem; padding-right: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">gallery<span>.</span>dash</div>
+  <div class="header-meta" id="last-updated">Actualizado hoy</div>
+</header>
+
+<div class="summary">
+  <div class="stat-card">
+    <span class="stat-label">Total imágenes</span>
+    <span class="stat-value" id="total-images">—</span>
+    <span class="stat-sub" id="stat-categories">— categorías</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Total vistas</span>
+    <span class="stat-value" id="total-views">—</span>
+    <span class="stat-sub">↑ esta semana</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Me gusta</span>
+    <span class="stat-value" id="total-likes">—</span>
+    <span class="stat-sub">promedio por imagen</span>
+  </div>
+  <div class="stat-card">
+    <span class="stat-label">Más popular</span>
+    <span class="stat-value" id="top-image">—</span>
+    <span class="stat-sub" id="top-views">— vistas</span>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="filter-group" id="filter-group">
+    <button class="filter-btn active" data-filter="all">Todas</button>
+  </div>
+  <select class="sort-select" id="sort-select">
+    <option value="views">Ordenar: Vistas</option>
+    <option value="likes">Ordenar: Me gusta</option>
+    <option value="date">Ordenar: Fecha</option>
+    <option value="title">Ordenar: Título</option>
+  </select>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-inner">
+    <img class="lb-img" id="lb-img" src="" alt=""/>
+    <div class="lb-info">
+      <div>
+        <p class="lb-author" id="lb-author">Autor</p>
+        <h2 class="lb-title" id="lb-title">Título</h2>
+      </div>
+      <span class="lb-tag" id="lb-tag">Categoría</span>
+      <div class="lb-stats" id="lb-stats"></div>
+      <button class="lb-close" id="lb-close">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script src="dashboard.js"></script>
+</body>
+</html>
