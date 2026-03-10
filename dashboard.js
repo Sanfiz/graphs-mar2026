@@ -44,85 +44,11 @@ const IMAGES = [
     score: 97,
     src: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=800&q=80",
     thumb: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=400&q=70"
-  },
-  {
-    id: 4,
-    title: "Mar abierto",
-    author: "Luis Vega",
-    category: "Naturaleza",
-    date: "2024-10-30",
-    views: 2980,
-    likes: 175,
-    downloads: 54,
-    score: 78,
-    src: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=400&q=70"
-  },
-  {
-    id: 5,
-    title: "Geometría mínima",
-    author: "Sara Font",
-    category: "Abstracto",
-    date: "2024-12-10",
-    views: 1870,
-    likes: 134,
-    downloads: 41,
-    score: 71,
-    src: "https://images.unsplash.com/photo-1557683304-673a23048d34?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1557683304-673a23048d34?w=400&q=70"
-  },
-  {
-    id: 6,
-    title: "Mercado central",
-    author: "Pedro Lara",
-    category: "Urbano",
-    date: "2024-11-05",
-    views: 3710,
-    likes: 229,
-    downloads: 78,
-    score: 86,
-    src: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=70"
-  },
-  {
-    id: 7,
-    title: "Bosque de niebla",
-    author: "Isabel Cruz",
-    category: "Naturaleza",
-    date: "2024-09-18",
-    views: 5120,
-    likes: 367,
-    downloads: 112,
-    score: 92,
-    src: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&q=70"
-  },
-  {
-    id: 8,
-    title: "Close-up flores",
-    author: "Carla Pinto",
-    category: "Macro",
-    date: "2024-12-15",
-    views: 2340,
-    likes: 201,
-    downloads: 63,
-    score: 80,
-    src: "https://images.unsplash.com/photo-1490750967868-88df5691cc56?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1490750967868-88df5691cc56?w=400&q=70"
-  },
-  {
-    id: 9,
-    title: "Noche estrellada",
-    author: "Jorge Salas",
-    category: "Abstracto",
-    date: "2024-10-07",
-    views: 4430,
-    likes: 298,
-    downloads: 89,
-    score: 90,
-    src: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400&q=70"
   }
+  
+
+  
+
 ];
 
 // ─────────────────────────────────────────────
