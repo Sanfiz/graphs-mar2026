@@ -15,8 +15,8 @@ const IMAGES = [
     likes: 312,
     downloads: 98,
     score: 94,
-    src: "./images/terciles_ecmwf_lead102025_NDJFM",
-    thumb: "./images/terciles_ecmwf_lead102025_NDJFM"
+    src: "./images/terciles_ecmwf_lead102025_NDJFM.png",
+    thumb: "./images/terciles_ecmwf_lead102025_NDJFM.png"
   },
   {
     id: 2,
