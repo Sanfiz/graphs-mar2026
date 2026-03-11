@@ -15,9 +15,8 @@ const IMAGES = [
     likes: 312,
     downloads: 98,
     score: 94,
-    // Cambia esta URL por la ruta de tu imagen: "./images/foto1.jpg"
-    src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&q=70"
+    src: "./images/terciles_ecmwf_lead102025_NDJFM",
+    thumb: "./images/terciles_ecmwf_lead102025_NDJFM"
   },
   {
     id: 2,
