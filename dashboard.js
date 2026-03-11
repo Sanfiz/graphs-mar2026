@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────
 //  dashboard.js  —  Gallery Dashboard
-//  Edita el array IMAGES para usar tus propias
-//  imágenes, títulos, autores y estadísticas.
+//  Plots hechos en marzo 2026
+//  
 // ─────────────────────────────────────────────
 
 const IMAGES = [
